@@ -1,0 +1,108 @@
+[gd_scene load_steps=14 format=3 uid="uid://dkoxmdhjt5nlc"]
+
+[ext_resource type="PackedScene" uid="uid://buhj3wwu1hkpm" path="res://characters/player/Player.tscn" id="1_fy7km"]
+[ext_resource type="PackedScene" uid="uid://m6fsvsni2j1g" path="res://systems/camera_3d.tscn" id="1_nernj"]
+[ext_resource type="Script" path="res://systems/camera_3d.gd" id="2_sas6g"]
+[ext_resource type="Script" path="res://prototype/ActivationPole.gd" id="4_msjmb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eg654"]
+sky_top_color = Color(0.470588, 0.470588, 0.470588, 1)
+sky_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
+sky_energy_multiplier = 0.5
+ground_bottom_color = Color(0.76, 0.76, 0.76, 1)
+ground_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
+
+[sub_resource type="Sky" id="Sky_8vlou"]
+sky_material = SubResource("ProceduralSkyMaterial_eg654")
+
+[sub_resource type="Environment" id="Environment_2psag"]
+background_mode = 1
+background_color = Color(0.788235, 0.788235, 0.788235, 1)
+sky = SubResource("Sky_8vlou")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_5xhxf"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ol0g3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aappm"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sbbxa"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtvg1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b1e7b"]
+height = 2.775
+radius = 0.305
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2psag")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 3.51778, 3.92751)
+shadow_enabled = true
+directional_shadow_max_distance = 9.5
+sky_mode = 1
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(6.76561, 0, 0, 0, 0.969787, -2.42985, 0, 0.243954, 9.65938, 0, -0.0150645, -10.5057)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(34.2113, 0, 0, 0, 1, 0, 0, 0, 24.2464, 0, -1.04393, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+mesh = SubResource("BoxMesh_5xhxf")
+
+[node name="Camera3D" parent="." node_paths=PackedStringArray("targetPoint") instance=ExtResource("1_nernj")]
+script = ExtResource("2_sas6g")
+targetPoint = NodePath("../CameraTarget")
+
+[node name="Player" parent="." instance=ExtResource("1_fy7km")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 5.45398)
+collision_mask = 7
+
+[node name="CameraTarget" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0118852)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraTarget"]
+transform = Transform3D(0.53, 0, 0, 0, 0.53, 0, 0, 0, 0.53, 0, 0, 0)
+mesh = SubResource("SphereMesh_ol0g3")
+surface_material_override/0 = SubResource("StandardMaterial3D_aappm")
+
+[node name="ActivationPole" type="StaticBody3D" parent="." groups=["interactable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4104, 0.0774577, -0.193639)
+collision_layer = 4
+script = ExtResource("4_msjmb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ActivationPole"]
+transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.333319, 0)
+mesh = SubResource("CylinderMesh_sbbxa")
+surface_material_override/0 = SubResource("StandardMaterial3D_dtvg1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ActivationPole"]
+shape = SubResource("CylinderShape3D_b1e7b")
+
+[node name="ActivationPole2" type="StaticBody3D" parent="." groups=["interactable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27226, 0.0774577, -0.193639)
+collision_layer = 4
+script = ExtResource("4_msjmb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ActivationPole2"]
+transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.333319, 0)
+mesh = SubResource("CylinderMesh_sbbxa")
+surface_material_override/0 = SubResource("StandardMaterial3D_dtvg1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ActivationPole2"]
+shape = SubResource("CylinderShape3D_b1e7b")
+
+[node name="Area3D" type="Area3D" parent="."]
