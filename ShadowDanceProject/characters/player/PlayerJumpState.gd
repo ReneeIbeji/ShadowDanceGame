@@ -5,6 +5,7 @@ var holdTimeLeft : float
 func enter(values : Dictionary) -> void:
 	player.CurrentSpeed = player.SPEED_AIR
 	holdTimeLeft = player.JUMP_HOLDDOWNTIME
+	player.velocity.y = player.JUMP_VELOCITY
 
 func handle_input(event : InputEvent) -> void:
 	pass

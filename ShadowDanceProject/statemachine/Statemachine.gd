@@ -35,7 +35,8 @@ func transtion_to(new_state_name : String, values : Dictionary) -> void:
 	
 	print(new_state_name)
 	state.exit()
-	state = get_node(new_state_name)
-	state.enter(values)
+	var newState : State = get_node(new_state_name)
+	newState.enter(values)
+	state = newState
 	emit_signal("transitioned", state.name)
 

@@ -65,6 +65,10 @@ func physics_update(delta : float) -> void:
 	if Input.is_action_just_released("MOVE_SINK"):
 		state_machine.transtion_to("PlayerNormalState", {})
 	
+	if Input.is_action_just_pressed("MOVE_JUMP"):
+		player.change_to_standup_model()
+		state_machine.transtion_to("PlayerJumpState", {})
+	
 	# use global coordinates, not local to node
 	var query = PhysicsRayQueryParameters3D.create(player.position, player.position - player.up_direction * 2,0b10 )
 	var result = space_state.intersect_ray(query)
@@ -86,8 +90,6 @@ func physics_update(delta : float) -> void:
 			break
 	 
 	if loop:
-		
-		
 		var newShape : ConvexPolygonShape3D = createConvexShapeFromMP(movementLog.slice(0, loopStart + 1))
 		newAreaBody = Area3D.new()
 		var newCollisionShape : CollisionShape3D = CollisionShape3D.new()

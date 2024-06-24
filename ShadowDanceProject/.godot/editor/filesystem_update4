@@ -1,5 +1,8 @@
 res://prototype/Prototype.tscn
 res://characters/player/Player.tscn
 res://systems/camera_3d.tscn
-res://characters/player/Player.gd
+res://characters/player/PlayerSinkState.gd
+res://statemachine/Statemachine.gd
 res://characters/player/PlayerJumpState.gd
+res://characters/player/PlayerNormalState.gd
+res://characters/player/Player.gd
