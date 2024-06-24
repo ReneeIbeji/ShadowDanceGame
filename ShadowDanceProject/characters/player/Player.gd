@@ -6,7 +6,10 @@ const SPEED_NORMAL = 5.0
 const SPEED_AIR = 4.0 
 const SPEED_SINK = 8
 
-const JUMP_VELOCITY = 7
+const JUMP_VELOCITY = 5
+const JUMP_VELOCITY_MAX = 2
+
+const JUMP_HOLDDOWNTIME = 0.5
 
 var moving : bool 
 var CurrentSpeed : float = SPEED_NORMAL

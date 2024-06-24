@@ -11,6 +11,10 @@ var movementLog : Array[MovementPoint]
 var lastPlayerPos : Vector3
 var currentPlayerPos : Vector3
 
+var loopCheckNeeded : bool
+var newAreaBody : Area3D
+
+
 
 func enter(values : Dictionary) -> void:
 	player.change_to_sink_model()
@@ -42,10 +46,19 @@ func handle_input(event : InputEvent) -> void:
 
 func update(delta : float) -> void:
 	drawMovementPoints()
-	pass
+	
+
 
 
 func physics_update(delta : float) -> void:
+	
+	if loopCheckNeeded:
+		for node in newAreaBody.get_overlapping_bodies():
+			node.activate()
+		newAreaBody.queue_free()
+		newAreaBody = null
+		loopCheckNeeded = false
+	
 	if !player.is_on_floor():
 		state_machine.transtion_to("PlayerFallingState", {})
 	
@@ -76,21 +89,22 @@ func physics_update(delta : float) -> void:
 		
 		
 		var newShape : ConvexPolygonShape3D = createConvexShapeFromMP(movementLog.slice(0, loopStart + 1))
-		var newAreaBody : Area3D = Area3D.new()
+		newAreaBody = Area3D.new()
 		var newCollisionShape : CollisionShape3D = CollisionShape3D.new()
 		newCollisionShape.shape = newShape
-		newAreaBody.body_entered.connect(objectInLoop)
 		newAreaBody.collision_mask = 0b100
 		newAreaBody.add_child(newCollisionShape)
 		player.get_parent().add_child(newAreaBody)
+		print(newAreaBody.get_overlapping_areas())
+		loopCheckNeeded = true
+
 		
 		
 		movementLog.clear()
 		
 		currentDirectionStart = currentPlayerPos
 		currentDirection = player.velocity.normalized() 
-		
-
+	
 	 
 	if (currentDirection != player.velocity.normalized() || currentSurfaceNormal != player.get_floor_normal()) &&  (player.velocity.normalized()     != Vector3.ZERO || movementLog.is_empty()) :
 		var newPoint : MovementPoint = MovementPoint.new()
@@ -111,8 +125,6 @@ func physics_update(delta : float) -> void:
 func exit() -> void:
 	pass
 
-func objectInLoop(body : Node3D) -> void:
-	body.activate()
 
 func createConvexShapeFromMP(points : Array[MovementPoint]) -> ConvexPolygonShape3D:
 	var packedVectors : PackedVector3Array

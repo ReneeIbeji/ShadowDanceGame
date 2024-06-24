@@ -44,19 +44,25 @@ radius = 0.305
 environment = SubResource("Environment_2psag")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 3.51778, 3.92751)
+transform = Transform3D(-0.866025, -0.433013, 0.25, 1.49012e-08, 0.5, 0.866025, -0.5, 0.75, -0.433013, 1.90735e-06, 3.51778, 3.92751)
 shadow_enabled = true
 directional_shadow_max_distance = 9.5
 sky_mode = 1
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(6.76561, 0, 0, 0, 0.969787, -2.42985, 0, 0.243954, 9.65938, 0, -0.0150645, -10.5057)
+transform = Transform3D(6.76561, 0, 0, 0, 0.870433, -4.90333, 0, 0.492287, 8.66979, -20.059, 1.43307, 6.18402)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(-6.76561, -4.3049e-08, -7.57869e-07, 0, 0.870356, -4.90469, 5.91468e-07, -0.492424, -8.66901, -20.0616, 1.48386, -11.9554)
 use_collision = true
 collision_layer = 2
 collision_mask = 3
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
-transform = Transform3D(34.2113, 0, 0, 0, 1, 0, 0, 0, 24.2464, 0, -1.04393, 0)
+transform = Transform3D(73.93, 0, 0, 0, 0.984352, 0, 0, 0, 87.3381, 0, -1.04393, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 3
@@ -106,3 +112,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dtvg1")
 shape = SubResource("CylinderShape3D_b1e7b")
 
 [node name="Area3D" type="Area3D" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(6.76561, 0, 0, 0, 1, 0, 0, 0, 9.96031, -20.059, 3.82, -2.87)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
