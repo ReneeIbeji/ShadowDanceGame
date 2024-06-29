@@ -43,6 +43,8 @@ func _process(delta):
 	
 	
 	look_at(targetPoint.position, Vector3.UP)
+	#if WorldGlobal.CurrentPlayer.velocity.length() != 0:
+		#targetPoint.rotation.y = rotate_toward( targetPoint.rotation.y, targetPoint.position.angle_to(WorldGlobal.CurrentPlayer.), 1.5 * delta)
 	
 	
 

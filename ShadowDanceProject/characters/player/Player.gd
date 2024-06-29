@@ -26,29 +26,17 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("MOVE_LEFT", "MOVE_RIGHT", "MOVE_FORWARD", "MOVE_BACK")
 	var direction = (WorldGlobal.CurrentPlayerCamera.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	if velocity.x * direction.x < 0:
-		velocity.x = 0
-	
-	if velocity.z * direction.z < 0:
-		velocity.z = 0
-	
-	velocity.x += direction.x * CurrentSpeed * delta
-	velocity.z += direction.z * CurrentSpeed * delta
-	
-	
-	$PlayerModel.look_at(global_position + velocity.normalized(), Vector3.UP)
-	$PlayerModel.rotation.x = 0
-	if direction == Vector3.ZERO:
-		velocity.x = move_toward(velocity.x, 0, FRIC * CurrentSpeed * delta)
-		velocity.z = move_toward(velocity.z, 0, FRIC * CurrentSpeed * delta)
-	
-	var temp :  Vector2 = Vector2(velocity.x,velocity.z)
-	temp = temp.limit_length(CurrentSpeed)
-	
-	velocity.x = temp.x
-	velocity.z = temp.y
-	
+	if direction:
+		velocity.x = direction.x * CurrentSpeed
+		velocity.z = direction.z * CurrentSpeed
+		$PlayerModel.look_at(global_position + velocity.normalized(), Vector3.UP)
+		$PlayerModel.rotation.x = 0
+	else:
+		velocity.x = move_toward(velocity.x, 0, CurrentSpeed)
+		velocity.z = move_toward(velocity.z, 0, CurrentSpeed)
 	move_and_slide()
+	
+
 	
 
 func change_to_standup_model():
