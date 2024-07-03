@@ -1,4 +1,2 @@
 res://prototype/Prototype.tscn
 res://characters/player/Player.tscn
-res://systems/camera_3d.tscn
-res://systems/camera_3d.gd

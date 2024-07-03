@@ -68,10 +68,6 @@ collision_layer = 2
 collision_mask = 3
 mesh = SubResource("BoxMesh_5xhxf")
 
-[node name="Camera3D" parent="." node_paths=PackedStringArray("targetPoint") instance=ExtResource("1_nernj")]
-script = ExtResource("2_sas6g")
-targetPoint = NodePath("../CameraTarget")
-
 [node name="Player" parent="." instance=ExtResource("1_fy7km")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 5.45398)
 collision_mask = 7
@@ -84,6 +80,10 @@ visible = false
 transform = Transform3D(0.53, 0, 0, 0, 0.53, 0, 0, 0, 0.53, 0, 0, 0)
 mesh = SubResource("SphereMesh_ol0g3")
 surface_material_override/0 = SubResource("StandardMaterial3D_aappm")
+
+[node name="Camera3D" parent="." node_paths=PackedStringArray("targetPoint") instance=ExtResource("1_nernj")]
+script = ExtResource("2_sas6g")
+targetPoint = NodePath("../CameraTarget")
 
 [node name="ActivationPole" type="StaticBody3D" parent="." groups=["interactable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4104, 0.0774577, -0.193639)
@@ -118,3 +118,15 @@ transform = Transform3D(6.76561, 0, 0, 0, 1, 0, 0, 0, 9.96031, -20.059, 3.82, -2
 use_collision = true
 collision_layer = 2
 collision_mask = 3
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0804958, 4.43848, -5.52624)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 14.105, 13.1895)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.96464, 4.30893, -11.4859)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 14.105, 13.1895)
