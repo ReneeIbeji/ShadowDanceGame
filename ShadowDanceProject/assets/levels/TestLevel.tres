@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=3 format=3 uid="uid://cmk2pvxn50hif"]
+
+[ext_resource type="Script" path="res://resources/LevelDataResouce.gd" id="1_5htgy"]
+[ext_resource type="PackedScene" uid="uid://b26sopcgcdmlj" path="res://assets/levels/TestLevel.tscn" id="1_38j0m"]
+
+[resource]
+script = ExtResource("1_5htgy")
+name = "Test Level"
+scene = ExtResource("1_38j0m")
+startPosition = Vector3(0, 1, 5)

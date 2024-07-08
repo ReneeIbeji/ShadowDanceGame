@@ -39,6 +39,10 @@ func _physics_process(delta):
 	move_and_slide()
 	#move_on_surface(velocity, delta)
 
+	# death check
+	if position.y < -10:
+		EventBus.player_died.emit("fallen")
+
 func move_on_surface(movement : Vector3, delta : float) -> void:
 	movement.y = 0
 	var colliderRadius = 0.5

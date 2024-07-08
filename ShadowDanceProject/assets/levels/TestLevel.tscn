@@ -1,48 +1,38 @@
-[gd_scene load_steps=12 format=3 uid="uid://dkoxmdhjt5nlc"]
+[gd_scene load_steps=10 format=3 uid="uid://b26sopcgcdmlj"]
 
-[ext_resource type="PackedScene" uid="uid://buhj3wwu1hkpm" path="res://characters/player/Player.tscn" id="1_fy7km"]
-[ext_resource type="PackedScene" uid="uid://m6fsvsni2j1g" path="res://systems/camera/camera_3d.tscn" id="1_nernj"]
-[ext_resource type="PackedScene" uid="uid://yw20xli0500e" path="res://systems/camera/camera_target.tscn" id="2_nfvir"]
-[ext_resource type="Script" path="res://prototype/ActivationPole.gd" id="4_msjmb"]
+[ext_resource type="Script" path="res://assets/levels/TestLevel.gd" id="1_d77od"]
+[ext_resource type="Script" path="res://prototype/ActivationPole.gd" id="1_vc0gd"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eg654"]
+[sub_resource type="BoxMesh" id="BoxMesh_kn4e0"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_n4psn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umvw4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kf36l"]
+height = 2.775
+radius = 0.305
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8rnju"]
 sky_top_color = Color(0.470588, 0.470588, 0.470588, 1)
 sky_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
 sky_energy_multiplier = 0.5
 ground_bottom_color = Color(0.76, 0.76, 0.76, 1)
 ground_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
 
-[sub_resource type="Sky" id="Sky_3sjma"]
-sky_material = SubResource("ProceduralSkyMaterial_eg654")
+[sub_resource type="Sky" id="Sky_8vlou"]
+sky_material = SubResource("ProceduralSkyMaterial_8rnju")
 
-[sub_resource type="Environment" id="Environment_2psag"]
+[sub_resource type="Environment" id="Environment_tuaod"]
 background_mode = 1
 background_color = Color(0.788235, 0.788235, 0.788235, 1)
-sky = SubResource("Sky_3sjma")
+sky = SubResource("Sky_8vlou")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ssao_enabled = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_5xhxf"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_sbbxa"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtvg1"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_b1e7b"]
-height = 2.775
-radius = 0.305
-
-[node name="World" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_2psag")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 1.49012e-08, 0.5, 0.866025, -0.5, 0.75, -0.433013, 1.90735e-06, 3.51778, 3.92751)
-shadow_enabled = true
-directional_shadow_max_distance = 9.5
-sky_mode = 1
+[node name="TestLevel" type="Node3D"]
+script = ExtResource("1_d77od")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(6.76561, 0, 0, 0, 0.870433, -4.90333, 0, 0.492287, 8.66979, -20.059, 1.43307, 6.18402)
@@ -61,43 +51,33 @@ transform = Transform3D(73.93, 0, 0, 0, 0.984352, 0, 0, 0, 87.3381, 0, -1.04393,
 use_collision = true
 collision_layer = 2
 collision_mask = 3
-mesh = SubResource("BoxMesh_5xhxf")
-
-[node name="Player" parent="." instance=ExtResource("1_fy7km")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 5.45398)
-collision_mask = 7
-
-[node name="CameraTarget" parent="." instance=ExtResource("2_nfvir")]
-
-[node name="Camera3D" parent="." instance=ExtResource("1_nernj")]
+mesh = SubResource("BoxMesh_kn4e0")
 
 [node name="ActivationPole" type="StaticBody3D" parent="." groups=["interactable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4104, 0.0774577, -0.193639)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4104, 0.0774577, 16.6244)
 collision_layer = 4
-script = ExtResource("4_msjmb")
+script = ExtResource("1_vc0gd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ActivationPole"]
 transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.333319, 0)
-mesh = SubResource("CylinderMesh_sbbxa")
-surface_material_override/0 = SubResource("StandardMaterial3D_dtvg1")
+mesh = SubResource("CylinderMesh_n4psn")
+surface_material_override/0 = SubResource("StandardMaterial3D_umvw4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ActivationPole"]
-shape = SubResource("CylinderShape3D_b1e7b")
+shape = SubResource("CylinderShape3D_kf36l")
 
 [node name="ActivationPole2" type="StaticBody3D" parent="." groups=["interactable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.27226, 0.0774577, -0.193639)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28624, 0.0774577, 17.4587)
 collision_layer = 4
-script = ExtResource("4_msjmb")
+script = ExtResource("1_vc0gd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ActivationPole2"]
 transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.333319, 0)
-mesh = SubResource("CylinderMesh_sbbxa")
-surface_material_override/0 = SubResource("StandardMaterial3D_dtvg1")
+mesh = SubResource("CylinderMesh_n4psn")
+surface_material_override/0 = SubResource("StandardMaterial3D_umvw4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ActivationPole2"]
-shape = SubResource("CylinderShape3D_b1e7b")
-
-[node name="Area3D" type="Area3D" parent="."]
+shape = SubResource("CylinderShape3D_kf36l")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(6.76561, 0, 0, 0, 1, 0, 0, 0, 9.96031, -20.059, 3.82, -2.87)
@@ -116,3 +96,12 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.9646
 use_collision = true
 collision_layer = 2
 size = Vector3(1, 14.105, 13.1895)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tuaod")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 1.49012e-08, 0.5, 0.866025, -0.5, 0.75, -0.433013, 1.90735e-06, 3.51778, 3.92751)
+shadow_enabled = true
+directional_shadow_max_distance = 9.5
+sky_mode = 1

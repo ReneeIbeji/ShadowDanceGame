@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="ShadowDanceProject"
-run/main_scene="res://prototype/Prototype.tscn"
+run/main_scene="res://systems/game.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://icon.png"
 
 [autoload]
 
 WorldGlobal="*res://systems/WorldGlobal.gd"
+EventBus="*res://systems/EventBus.gd"
 
 [debug_draw_3d]
 

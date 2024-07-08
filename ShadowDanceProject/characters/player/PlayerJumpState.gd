@@ -12,12 +12,12 @@ func handle_input(event : InputEvent) -> void:
 
 func update(delta : float) -> void:
 	pass
+
 func physics_update(delta : float) -> void:
 	if holdTimeLeft > 0:
 		if Input.is_action_pressed("MOVE_JUMP"):
 			var timeDif : float = min(delta, holdTimeLeft)
 			player.velocity.y += player.JUMP_VELOCITY_MAX * (timeDif  / player.JUMP_HOLDDOWNTIME)
-			print("Hello")
 			holdTimeLeft -= delta
 		else:
 			holdTimeLeft = 0  

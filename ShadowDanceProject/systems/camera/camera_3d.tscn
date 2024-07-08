@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://m6fsvsni2j1g"]
+
+[ext_resource type="Script" path="res://systems/camera/camera_3d.gd" id="1_bhdt1"]
+[ext_resource type="PackedScene" uid="uid://yw20xli0500e" path="res://systems/camera/camera_target.tscn" id="2_mhep4"]
+
+[node name="Camera3D" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.972776, 0.231748, 0, -0.231748, 0.972776, 0, 1.269, 3.807)
+script = ExtResource("1_bhdt1")
+targetPointScene = ExtResource("2_mhep4")

@@ -1,2 +1,11 @@
+res://systems/game.gd
+res://systems/camera/camera_3d.gd
 res://prototype/Prototype.tscn
 res://characters/player/Player.tscn
+res://assets/levels/TestLevel.tscn
+res://systems/game.tscn
+res://systems/camera/camera_3d.tscn
+res://systems/EventBus.tscn
+res://systems/camera/camera_target.tscn
+res://prototype/ActivationPole.gd
+res://classes/LevelClass.gd
