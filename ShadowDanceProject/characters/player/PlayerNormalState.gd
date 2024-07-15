@@ -14,7 +14,7 @@ func update(delta : float) -> void:
 func physics_update(delta : float) -> void:
 	player.CurrentSpeed = player.SPEED_NORMAL
 	if not player.is_on_floor():
-		player.velocity.y -= player.gravity * delta
+		state_machine.transtion_to("PlayerFallingState",  {})
 		
 	if Input.is_action_pressed("MOVE_SINK"):
 		state_machine.transtion_to("PlayerSinkState", {})

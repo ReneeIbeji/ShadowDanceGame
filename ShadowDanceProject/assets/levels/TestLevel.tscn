@@ -54,7 +54,7 @@ collision_mask = 3
 mesh = SubResource("BoxMesh_kn4e0")
 
 [node name="ActivationPole" type="StaticBody3D" parent="." groups=["interactable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4104, 0.0774577, 16.6244)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.26214, 0.0708407, 16.6089)
 collision_layer = 4
 script = ExtResource("1_vc0gd")
 
@@ -72,7 +72,7 @@ collision_layer = 4
 script = ExtResource("1_vc0gd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ActivationPole2"]
-transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.333319, 0)
+transform = Transform3D(0.5, 0, 0, 0, 1.065, 0, 0, 0, 0.5, 0, 0.0917674, 0)
 mesh = SubResource("CylinderMesh_n4psn")
 surface_material_override/0 = SubResource("StandardMaterial3D_umvw4")
 

@@ -65,7 +65,6 @@ mesh = SubResource("BoxMesh_5xhxf")
 
 [node name="Player" parent="." instance=ExtResource("1_fy7km")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025, 5.45398)
-collision_mask = 7
 
 [node name="CameraTarget" parent="." instance=ExtResource("2_nfvir")]
 

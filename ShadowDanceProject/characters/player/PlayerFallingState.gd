@@ -8,8 +8,11 @@ func handle_input(event : InputEvent) -> void:
 	pass
 
 func update(delta : float) -> void:
+	if player.is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
+		state_machine.transtion_to("PlayerSinkState", {})
+
 	if not player.is_on_floor():
-		player.velocity.y -= player.gravity * delta
+		player.baseVelocity.y -= player.gravity * delta
 	
 	if player.is_on_floor():
 		state_machine.transtion_to("PlayerNormalState", {})

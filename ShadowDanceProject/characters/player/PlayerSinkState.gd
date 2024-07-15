@@ -51,15 +51,23 @@ func update(delta : float) -> void:
 
 
 func physics_update(delta : float) -> void:
+	if player.is_on_wall_only():
+		print("continue climb")
+		player.climbing = true
+	elif player.is_on_wall():
+		print("start climb")
+		player.climbing = true
+	else:
+		player.climbing = false
 	
 	if loopCheckNeeded:
-		for node in newAreaBody.get_overlapping_bodies():
-			node.activate()
+		for node : Interactable in newAreaBody.get_overlapping_bodies():
+			node.activate.emit()
 		newAreaBody.queue_free()
 		newAreaBody = null
 		loopCheckNeeded = false
 	
-	if !player.is_on_floor():
+	if !player.is_on_floor() && !(player.climbing && player.is_on_wall_only()):
 		state_machine.transtion_to("PlayerFallingState", {})
 	
 	if Input.is_action_just_released("MOVE_SINK"):
@@ -125,7 +133,8 @@ func physics_update(delta : float) -> void:
 
 
 func exit() -> void:
-	pass
+	player.up_direction = Vector3.UP
+	player.climbing = false;
 
 
 func createConvexShapeFromMP(points : Array[MovementPoint]) -> ConvexPolygonShape3D:
@@ -135,7 +144,6 @@ func createConvexShapeFromMP(points : Array[MovementPoint]) -> ConvexPolygonShap
 		packedVectors.append(point.directionStart)
 		average += point.directionStart
 	
-	print(average)
 	average = average / points.size()
 	packedVectors.append(points[0].directionStart)
 	

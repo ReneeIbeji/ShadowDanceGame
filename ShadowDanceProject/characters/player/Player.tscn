@@ -22,7 +22,7 @@ albedo_color = Color(0, 0, 0, 1)
 height = 0.354409
 
 [node name="Player" type="CharacterBody3D" groups=["Entity", "Player"]]
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("1_2mefl")
 
 [node name="PlayerModel" type="MeshInstance3D" parent="."]
