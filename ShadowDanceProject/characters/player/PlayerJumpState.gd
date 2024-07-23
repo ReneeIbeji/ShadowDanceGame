@@ -24,16 +24,16 @@ func physics_update(delta : float) -> void:
 	if holdTimeLeft > 0:
 		if Input.is_action_pressed("MOVE_JUMP"):
 			var timeDif : float = min(delta, holdTimeLeft)
-			player.baseVelocity.y += player.JUMP_VELOCITY_MAX * (timeDif  / player.JUMP_HOLDDOWNTIME)
+			player.velocity.y += player.JUMP_VELOCITY_MAX * (timeDif  / player.JUMP_HOLDDOWNTIME)
 			holdTimeLeft -= delta
 		else:
 			holdTimeLeft = 0  
 	
-	if !player.player_is_on_floor():
-		player.baseVelocity.y -= player.gravity * delta
+	if !player.is_on_floor():
+		player.velocity.y -= player.gravity * delta
 		left_ground = true
 	
-	if player.player_is_on_floor() && left_ground:
+	if player.is_on_floor() && left_ground:
 		state_machine.transtion_to("PlayerNormalState", {})
 
 

@@ -6,3 +6,7 @@ res://systems/camera/camera_3d.tscn
 res://systems/EventBus.tscn
 res://systems/camera/camera_target.tscn
 res://characters/player/Player.gd
+res://characters/player/PlayerFallingState.gd
+res://characters/player/PlayerJumpState.gd
+res://characters/player/PlayerNormalState.gd
+res://characters/player/PlayerSinkState.gd
