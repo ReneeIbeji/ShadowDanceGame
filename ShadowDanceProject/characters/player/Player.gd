@@ -20,17 +20,6 @@ var climbing : bool
 var CurrentSpeed : float = SPEED_NORMAL
 var baseVelocity : Vector3 = Vector3.ZERO
 
-var motion_results : Array[KinematicCollision3D]
-var previous_position : Vector3
-var last_motion : Vector3
-
-var wall_normal : Vector3
-var floor_normal : Vector3
-var floor_depth : Vector3
-
-var platform_ceiling_velocity : Vector3
-var ceiling_normal : Vector3
-
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -52,6 +41,14 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, CurrentSpeed)
 		velocity.z = move_toward(velocity.z, 0, CurrentSpeed)
+	
+	if climbing:
+		var climbVelocity : Vector3 = Vector3.ZERO
+		climbVelocity.y = velocity.dot(-get_wall_normal())
+		move_and_collide(climbVelocity * delta)
+		velocity -= climbVelocity.y * -get_wall_normal()
+		print(velocity.y)
+
 
 	# move_on_surface(velocity, delta)
 	move_and_slide()

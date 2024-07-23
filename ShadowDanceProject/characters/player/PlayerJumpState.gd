@@ -7,7 +7,7 @@ func enter(values : Dictionary) -> void:
 	left_ground = false
 	player.CurrentSpeed = player.SPEED_AIR
 	holdTimeLeft = player.JUMP_HOLDDOWNTIME
-	player.baseVelocity.y = player.JUMP_VELOCITY
+	player.velocity.y = player.JUMP_VELOCITY
 
 
 func handle_input(event : InputEvent) -> void:
@@ -19,6 +19,7 @@ func update(delta : float) -> void:
 func physics_update(delta : float) -> void:
 
 	if player.is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
+		player.velocity.y = 0
 		state_machine.transtion_to("PlayerSinkState", {})
 
 	if holdTimeLeft > 0:
