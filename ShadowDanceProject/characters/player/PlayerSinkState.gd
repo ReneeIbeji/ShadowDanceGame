@@ -67,7 +67,7 @@ func physics_update(delta : float) -> void:
 		newAreaBody = null
 		loopCheckNeeded = false
 	
-	if !player.is_on_floor() && !(player.climbing && player.is_on_wall_only()):
+	if !player.player_is_on_floor() && !(player.climbing && player.is_on_wall_only()):
 		state_machine.transtion_to("PlayerFallingState", {})
 	
 	if Input.is_action_just_released("MOVE_SINK"):

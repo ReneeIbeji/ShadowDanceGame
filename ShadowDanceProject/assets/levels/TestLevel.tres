@@ -7,4 +7,4 @@
 script = ExtResource("1_5htgy")
 name = "Test Level"
 scene = ExtResource("1_38j0m")
-startPosition = Vector3(0, 1, 5)
+startPosition = Vector3(0, 11.515, 5)

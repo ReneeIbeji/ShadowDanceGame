@@ -1,11 +1,14 @@
 extends PlayerState
 
+var left_ground : bool
 var holdTimeLeft : float
 
 func enter(values : Dictionary) -> void:
+	left_ground = false
 	player.CurrentSpeed = player.SPEED_AIR
 	holdTimeLeft = player.JUMP_HOLDDOWNTIME
 	player.baseVelocity.y = player.JUMP_VELOCITY
+
 
 func handle_input(event : InputEvent) -> void:
 	pass
@@ -26,10 +29,11 @@ func physics_update(delta : float) -> void:
 		else:
 			holdTimeLeft = 0  
 	
-	if not player.is_on_floor():
+	if !player.player_is_on_floor():
 		player.baseVelocity.y -= player.gravity * delta
+		left_ground = true
 	
-	if player.is_on_floor():
+	if player.player_is_on_floor() && left_ground:
 		state_machine.transtion_to("PlayerNormalState", {})
 
 

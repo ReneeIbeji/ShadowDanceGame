@@ -22,6 +22,7 @@ albedo_color = Color(0, 0, 0, 1)
 height = 0.354409
 
 [node name="Player" type="CharacterBody3D" groups=["Entity", "Player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0284901, -1.90735e-06, 0.0280104)
 collision_mask = 7
 script = ExtResource("1_2mefl")
 

@@ -1,6 +1,5 @@
-res://prototype/Prototype.tscn
-res://systems/game.gd
 res://characters/player/Player.tscn
+res://systems/game.gd
 res://assets/levels/TestLevel.tscn
 res://systems/game.tscn
 res://systems/camera/camera_3d.tscn

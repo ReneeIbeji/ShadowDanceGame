@@ -11,10 +11,10 @@ func update(delta : float) -> void:
 	if player.is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
 		state_machine.transtion_to("PlayerSinkState", {})
 
-	if not player.is_on_floor():
+	if not player.player_is_on_floor():
 		player.baseVelocity.y -= player.gravity * delta
 	
-	if player.is_on_floor():
+	if player.player_is_on_floor():
 		state_machine.transtion_to("PlayerNormalState", {})
 
 func physics_update(delta : float) -> void:
