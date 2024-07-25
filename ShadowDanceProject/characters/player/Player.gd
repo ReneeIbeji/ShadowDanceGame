@@ -271,4 +271,7 @@ func collision_radius() -> float:
 	return 0.5 
 
 func collision_height() -> float:
-	return 0.354
+	if swimming:
+		return 0.354
+	
+	return 2
