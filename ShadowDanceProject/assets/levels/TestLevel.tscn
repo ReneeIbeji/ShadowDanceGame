@@ -86,16 +86,16 @@ collision_layer = 2
 collision_mask = 3
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0804958, 4.43848, -5.52624)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.76702, 4.43848, -5.52624)
 use_collision = true
 collision_layer = 2
-size = Vector3(1, 14.105, 13.1895)
+size = Vector3(4.37305, 14.105, 13.1895)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.96464, 4.30893, -11.4859)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.96464, 4.30893, -9.81946)
 use_collision = true
 collision_layer = 2
-size = Vector3(1, 14.105, 13.1895)
+size = Vector3(4.33289, 14.105, 13.1895)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tuaod")

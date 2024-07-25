@@ -14,6 +14,8 @@ var currentPlayerPos : Vector3
 var loopCheckNeeded : bool
 var newAreaBody : Area3D
 
+var offFloorBuffer : float = 0.1
+var offFloorCount : float
 
 
 func enter(values : Dictionary) -> void:
@@ -41,6 +43,8 @@ func enter(values : Dictionary) -> void:
 	currentSurfaceNormal = player.get_floor_normal()
 	lastPlayerPos = player.position
 
+	offFloorCount = 0
+
 func handle_input(event : InputEvent) -> void:
 	pass
 
@@ -51,11 +55,34 @@ func update(delta : float) -> void:
 
 
 func physics_update(delta : float) -> void:
-	if player.is_on_wall_only():
-		print("continue climb")
+	if !player.player_is_on_floor() && !player.climbing:
+		offFloorCount += delta
+	else:
+		offFloorCount = 0
+
+	if player.climbing:
+		# hook test
+		var space_state := player.get_world_3d().direct_space_state
+		var corner_query := PhysicsRayQueryParameters3D.create(currentPlayerPos, currentPlayerPos + -player.wall_normal * (player.collision_radius() + 0.1),0b10)
+
+		var corner_result := space_state.intersect_ray(corner_query)
+
+		if(!corner_result):
+			for i in range(10):
+				var ledge_query := PhysicsRayQueryParameters3D.create(currentPlayerPos + -player.wall_normal * (player.collision_radius() + i * 0.02), currentPlayerPos + -player.wall_normal * (player.collision_radius() + i * 0.02) - Vector3.UP * 0.1, 0b10 )
+				var ledge_result := space_state.intersect_ray(ledge_query)
+
+				if(ledge_result):
+					print("hit")
+					player.position = ledge_result.position + (player.collision_height() + 0.5) * player.up_direction
+					DebugDraw3D.draw_line(ledge_result.position, ledge_result.position + player.collision_height() * player.up_direction, Color.BLUE, 5)
+					player.velocity += Vector3.DOWN
+					player.velocity -= player.wall_normal 
+					break
+
+	if player.player_is_only_on_wall():
 		player.climbing = true
-	elif player.is_on_wall():
-		print("start climb")
+	elif player.player_is_on_wall():
 		player.climbing = true
 	else:
 		player.climbing = false
@@ -67,7 +94,7 @@ func physics_update(delta : float) -> void:
 		newAreaBody = null
 		loopCheckNeeded = false
 	
-	if !player.is_on_floor() && !(player.climbing && player.is_on_wall_only()):
+	if !player.player_is_on_floor() && !(player.climbing && player.player_is_only_on_wall()) && (offFloorCount > offFloorBuffer):
 		state_machine.transtion_to("PlayerFallingState", {})
 	
 	if Input.is_action_just_released("MOVE_SINK"):
@@ -128,6 +155,7 @@ func physics_update(delta : float) -> void:
 		currentDirectionStart = currentPlayerPos
 		currentDirection =  player.velocity.normalized()
 		currentSurfaceNormal = player.get_floor_normal()
+
 	
 
 

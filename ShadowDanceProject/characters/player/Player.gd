@@ -18,7 +18,9 @@ const JUMP_HOLDDOWNTIME = 0.5
 var currentCameraBasis : Basis
 var currentInputDir : Vector2
 
+
 var moving : bool
+var swimming : bool 
 var climbing : bool
 var CurrentSpeed : float = SPEED_NORMAL
 var baseVelocity : Vector3 = Vector3.ZERO
@@ -267,3 +269,6 @@ func player_is_only_on_ceiling() -> bool:
 
 func collision_radius() -> float:
 	return 0.5 
+
+func collision_height() -> float:
+	return 0.354
