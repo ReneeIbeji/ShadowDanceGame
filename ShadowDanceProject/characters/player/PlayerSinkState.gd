@@ -21,6 +21,7 @@ var offFloorCount : float
 func enter(values : Dictionary) -> void:
 	player.change_to_sink_model()
 	player.CurrentSpeed = player.SPEED_SINK
+	player.swimming = true
 	
 	movementLog.clear()
 	
@@ -163,6 +164,7 @@ func physics_update(delta : float) -> void:
 func exit() -> void:
 	player.up_direction = Vector3.UP
 	player.climbing = false;
+	player.swimming = false
 
 
 func createConvexShapeFromMP(points : Array[MovementPoint]) -> ConvexPolygonShape3D:
