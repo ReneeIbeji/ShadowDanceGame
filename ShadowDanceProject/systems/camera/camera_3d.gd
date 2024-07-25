@@ -18,7 +18,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	var currentPlayer : Player = WorldGlobal.CurrentPlayer as Player
 	
 	if currentPlayer:
@@ -29,6 +29,20 @@ func _process(delta):
 		
 		
 		targetPoint.rotate_y(1.5 * cameraRotateInput * delta)
+
+		var forwardDot = -targetPoint.basis.z.dot(currentPlayer.facingDirection)
+
+		if is_zero_approx(cameraRotateInput)  && forwardDot > -0.8  :
+			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.facingDirection,  inverse_lerp(0.8,-0.8,forwardDot) * 3 * delta )
+			targetPosition.y = 0
+			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
+		elif currentPlayer.velocity.slide(currentPlayer.up_direction).is_zero_approx() && is_zero_approx(cameraRotateInput):
+			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.facingDirection,  3 * delta )
+			targetPosition.y = 0
+			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
+
+
+
 		targetPoint.position = currentPlayer.position + (targetPoint.position - currentPlayer.position).rotated(Vector3.UP,1.5 * cameraRotateInput * delta)
 		
 		var speedMulti : float = distFromCamera * 3
