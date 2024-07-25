@@ -18,7 +18,7 @@ func update(delta : float) -> void:
 
 func physics_update(delta : float) -> void:
 
-	if player.is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
+	if player.player_is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
 		player.velocity.y = 0
 		state_machine.transtion_to("PlayerSinkState", {})
 
@@ -30,11 +30,11 @@ func physics_update(delta : float) -> void:
 		else:
 			holdTimeLeft = 0  
 	
-	if !player.is_on_floor():
+	if !player.playerCollisionState.floor:
 		player.velocity.y -= player.gravity * delta
 		left_ground = true
 	
-	if player.is_on_floor() && left_ground:
+	if player.playerCollisionState.floor && left_ground:
 		state_machine.transtion_to("PlayerNormalState", {})
 
 
