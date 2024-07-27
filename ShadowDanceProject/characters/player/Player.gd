@@ -103,7 +103,6 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 			if playerCollisionState.wall && remaining_motion.dot(-wall_normal) > 0:
 				if climbing && first_slide:
 					remaining_motion.y = remaining_motion.dot(-wall_normal)
-					velocity = velocity.slide(up_direction)
 					first_slide = false
 					continue
 				else:
@@ -120,11 +119,10 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 		
 		if(remaining_motion.is_zero_approx()):
 			break
-		
+	
 
-
-	_snap_on_floor(previousCollisionState.floor, velocity.dot(up_direction) > 0)
-
+	if playerCollisionState.floor && !(velocity.dot(up_direction) > 0):
+		velocity = velocity.slide(floor_normal) + 1 * -floor_normal
 
 		
 
