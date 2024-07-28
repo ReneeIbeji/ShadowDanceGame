@@ -4,14 +4,14 @@ func enter(values : Dictionary) -> void:
 	pass
 
 func handle_input(event : InputEvent) -> void:
-	pass
+	if event.is_action_pressed("MOVE_JUMP") && player.playerCollisionState.floor:
+		state_machine.transtion_to("PlayerJumpState", {})
+
+
 
 
 func update(delta : float) -> void:
 	player.change_to_standup_model()
-
-
-func physics_update(delta : float) -> void:
 	player.CurrentSpeed = player.SPEED_NORMAL
 	if not player.playerCollisionState.floor:
 		state_machine.transtion_to("PlayerFallingState",  {})
@@ -20,9 +20,6 @@ func physics_update(delta : float) -> void:
 		state_machine.transtion_to("PlayerSinkState", {})
 		return
 	
-	# Handle jump.
-	if Input.is_action_just_pressed("MOVE_JUMP") and player.playerCollisionState.floor:
-		state_machine.transtion_to("PlayerJumpState", {})
 	
 
 

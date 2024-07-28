@@ -81,7 +81,7 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 	previousCollisionState = CollisionState.new(playerCollisionState.floor, playerCollisionState.wall ,playerCollisionState.ceiling)
 	playerCollisionState = CollisionState.new(false,false,false)
 
-	for i in range(1000):
+	for i in range(50):
 		var collision_result : KinematicCollision3D = move_and_collide(remaining_motion, false, 0.001, false, 6)
 		var collision : bool = (collision_result != null)
 
@@ -90,6 +90,7 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 			remaining_motion -= collision_result.get_travel()
 			var result_state : CollisionState = CollisionState.new(false, false, false)
 			
+		
 			set_collision_direction(collision_result, result_state, CollisionState.new(true, true, true))
 
 			
@@ -103,6 +104,8 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 			if playerCollisionState.wall && remaining_motion.dot(-wall_normal) > 0:
 				if climbing && first_slide:
 					remaining_motion.y = remaining_motion.dot(-wall_normal)
+					remaining_motion -= remaining_motion.dot(-wall_normal) * -wall_normal
+					velocity = velocity.slide(wall_normal)
 					first_slide = false
 					continue
 				else:
@@ -113,7 +116,6 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 				remaining_motion -= remaining_motion.dot(-ceiling_normal) * -ceiling_normal
 
 			_snap_on_floor(previousCollisionState.floor, velocity.dot(up_direction) > 0)
-
 		else:
 			remaining_motion = Vector3.ZERO
 		
