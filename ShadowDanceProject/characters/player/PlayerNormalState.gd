@@ -16,7 +16,7 @@ func update(delta : float) -> void:
 	if not player.playerCollisionState.floor:
 		state_machine.transtion_to("PlayerFallingState",  {})
 		
-	if Input.is_action_pressed("MOVE_SINK"):
+	if Input.is_action_pressed("MOVE_SINK") && player.player_is_on_sinkable_floor():
 		state_machine.transtion_to("PlayerSinkState", {})
 		return
 	

@@ -32,6 +32,7 @@ var floor_normal : Vector3
 var wall_normal : Vector3
 var ceiling_normal : Vector3
 
+var floor_sinkable : bool
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -75,8 +76,10 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 	var remaining_motion : Vector3 = var_velocity * var_delta
 
 	var previousCollisionState : CollisionState = CollisionState.new(false, false, false)
-	
 
+	if climbing && remaining_motion.dot(wall_normal) > 0 && player_is_on_wall() && !player_is_on_floor():
+		remaining_motion.y = -remaining_motion.dot(wall_normal)
+		remaining_motion -= remaining_motion.dot(wall_normal) * wall_normal
 
 	previousCollisionState = CollisionState.new(playerCollisionState.floor, playerCollisionState.wall ,playerCollisionState.ceiling)
 	playerCollisionState = CollisionState.new(false,false,false)
@@ -105,7 +108,7 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 				if climbing && first_slide:
 					remaining_motion.y = remaining_motion.dot(-wall_normal)
 					remaining_motion -= remaining_motion.dot(-wall_normal) * -wall_normal
-					velocity = velocity.slide(wall_normal)
+					print(remaining_motion)
 					first_slide = false
 					continue
 				else:
@@ -125,6 +128,9 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 
 	if playerCollisionState.floor && !(velocity.dot(up_direction) > 0):
 		velocity = velocity.slide(floor_normal) + 1 * -floor_normal
+	
+	if climbing && previousCollisionState.wall:
+		player_apply_wall_snap()
 
 		
 
@@ -163,7 +169,7 @@ func player_apply_floor_snap() -> void:
 
 	if  result:
 		var result_state : CollisionState = CollisionState.new(false,false,false)
-		var floor_state : CollisionState = CollisionState.new(false,false,true)
+		var floor_state : CollisionState = CollisionState.new(true,false,false)
 		set_collision_direction(result, result_state, floor_state)
 
 		if result_state.floor:
@@ -171,6 +177,26 @@ func player_apply_floor_snap() -> void:
 				if result.get_travel().length() > safe_margin:
 					position += up_direction * up_direction.dot(result.get_travel())
 
+
+func player_apply_wall_snap() -> void:
+	if playerCollisionState.wall:
+		return
+
+	var length  : float = max(floor_snap_length,safe_margin)
+
+	const max_collisons : int = 4
+	const recovery_as_collision = true
+
+	var result : KinematicCollision3D = move_and_collide(-wall_normal * length, true, 0.001,recovery_as_collision, max_collisons )
+
+	if  result:
+		var result_state : CollisionState = CollisionState.new(false,false,false)
+		var floor_state : CollisionState = CollisionState.new(false, true, false)
+		set_collision_direction(result, result_state, floor_state)
+
+		if result_state.wall:
+			if result.get_travel().length() > safe_margin:
+				position += -wall_normal  * -wall_normal.dot(result.get_travel())
 
 
 
@@ -191,6 +217,7 @@ func set_collision_direction(result : KinematicCollision3D, r_state : CollisionS
 				playerCollisionState.floor = true;
 				floor_normal =  result.get_normal(i)
 				floor_depth = result.get_depth()
+				floor_sinkable = (result.get_collider(i) as Node).is_in_group("sinkable")
 			continue
 
 		# Check if any collision is ceiling.
@@ -254,6 +281,9 @@ func player_is_on_floor() -> bool:
 func player_is_only_on_floor() -> bool:
 	return (playerCollisionState.floor && !(playerCollisionState.wall || playerCollisionState.ceiling))
 
+func player_is_on_sinkable_floor() -> bool:
+	return playerCollisionState.floor && floor_sinkable
+
 func player_is_on_wall() -> bool:
 	return playerCollisionState.wall
 
@@ -263,6 +293,7 @@ func player_is_only_on_wall() -> bool:
 
 func player_is_on_ceiling() -> bool:
 	return playerCollisionState.ceiling
+
 
 func player_is_only_on_ceiling() -> bool:
 	return (playerCollisionState.ceiling && !(playerCollisionState.floor || playerCollisionState.wall))

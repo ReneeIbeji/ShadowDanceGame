@@ -95,8 +95,11 @@ func physics_update(delta : float) -> void:
 		newAreaBody = null
 		loopCheckNeeded = false
 	
-	if !player.player_is_on_floor() && !(player.climbing && player.player_is_only_on_wall()) && (offFloorCount > offFloorBuffer):
+	if !player.player_is_on_sinkable_floor() && !(player.climbing && player.player_is_only_on_wall()) && (offFloorCount > offFloorBuffer):
 		state_machine.transtion_to("PlayerFallingState", {})
+	
+	if player.player_is_on_floor() && !player.player_is_on_sinkable_floor():
+		state_machine.transtion_to("PlayerNormalState", {})
 	
 	if Input.is_action_just_released("MOVE_SINK"):
 		state_machine.transtion_to("PlayerNormalState", {})
@@ -192,29 +195,9 @@ func drawMovementPoints() -> void:
 		DebugDraw3D.draw_line(movementLog[i].directionStart, movementLog[i+1].directionStart   , Color(0,0,0),0.01)
 
 func intersect(A,B,C,D) -> bool:
-	#var da : Vector3 = B - A
-	#var db : Vector3 = D - C
-	#var dc : Vector3 = C - A
-	#
-	#if dc.dot(da.cross(db)) != 0.0:
-		#return false
-	#
-	#var s : float = dc.cross(db).dot(da.cross(db)) / da.cross(db).length_squared()
-	#
-	#if s >= 0.0 and s <= 1.0:
-		#var ip : Vector3 = A  + da * Vector3(s,s,s);
-		#print("check")
-		#if onSegment(ip, A, B)  and onSegment(ip, C, D):
-			#DebugDraw3D.draw_line(ip - Vector3.UP, ip ,Color(1, 1, 0), 5)
-			#return true
-	#
-	#return false
-	
 	var results : PackedVector3Array = Geometry3D.get_closest_points_between_segments(A,B,C,D)
 	return roundVector(results[0]) == roundVector(results[1])
 
-func onSegment(p : Vector3 , q : Vector3, r : Vector3) -> bool:
-	return roundVector((q  - p).normalized()) == roundVector((p - r).normalized())
 
 func roundVector(v : Vector3) -> Vector3:
 	return (v * 1000).round() / 1000

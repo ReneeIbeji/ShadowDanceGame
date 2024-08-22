@@ -6,6 +6,7 @@ var returnSpeed = 1.5
 var cameraClampMax : Vector3 = Vector3(2,3,3)
 var cameraClampMin : Vector3 = Vector3(-2,-3, -0.5)
 
+var turnTowardsFacingDir : bool = true
 
 @export var targetPointScene :  PackedScene
 var targetPoint : Node3D
@@ -32,18 +33,26 @@ func _physics_process(delta):
 
 		var forwardDot = -targetPoint.basis.z.dot(currentPlayer.facingDirection)
 
+		if currentPlayer.velocity.slide(currentPlayer.up_direction).is_zero_approx() && !is_zero_approx(cameraRotateInput):
+			turnTowardsFacingDir = false
+		elif !currentPlayer.velocity.slide(currentPlayer.up_direction).is_zero_approx():
+			turnTowardsFacingDir = true
+
+
 		if currentPlayer.climbing:
-			var targetPosition = -targetPoint.basis.z.lerp(-currentPlayer.wall_normal, -targetPoint.basis.z.dot(-currentPlayer.wall_normal) * 3 * delta )
+			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.wall_normal, -targetPoint.basis.z.dot(currentPlayer.wall_normal) * 3 * delta )
 			targetPosition.y = 0
 			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
-		elif is_zero_approx(cameraRotateInput)  && forwardDot > -0.8  :
+		elif is_zero_approx(cameraRotateInput)  && forwardDot > -0.8 && turnTowardsFacingDir :
 			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.facingDirection,  inverse_lerp(0.8,-0.8,forwardDot) * 3 * delta )
 			targetPosition.y = 0
 			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
-		elif currentPlayer.velocity.slide(currentPlayer.up_direction).is_zero_approx() && is_zero_approx(cameraRotateInput):
+		elif currentPlayer.velocity.slide(currentPlayer.up_direction).is_zero_approx() && is_zero_approx(cameraRotateInput) && turnTowardsFacingDir:
 			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.facingDirection,  3 * delta )
 			targetPosition.y = 0
 			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
+			if (targetPosition - -targetPoint.basis.z).is_zero_approx():
+				turnTowardsFacingDir = false
 
 
 
