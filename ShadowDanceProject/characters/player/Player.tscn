@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://buhj3wwu1hkpm"]
+[gd_scene load_steps=14 format=3 uid="uid://buhj3wwu1hkpm"]
 
 [ext_resource type="Script" path="res://characters/player/Player.gd" id="1_2mefl"]
 [ext_resource type="Script" path="res://statemachine/Statemachine.gd" id="2_5yos1"]
+[ext_resource type="Script" path="res://characters/player/damage.gd" id="2_lh151"]
 [ext_resource type="Script" path="res://characters/player/PlayerNormalState.gd" id="3_jj554"]
 [ext_resource type="Script" path="res://characters/player/PlayerJumpState.gd" id="4_ux613"]
 [ext_resource type="Script" path="res://characters/player/PlayerSinkState.gd" id="5_1vtjs"]
@@ -47,18 +48,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.825548, 0)
 visible = false
 shape = SubResource("CylinderShape3D_fpk22")
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="PlayerController" type="Node" parent="."]
+
+[node name="Damage" type="Node" parent="PlayerController"]
+script = ExtResource("2_lh151")
+
+[node name="StateMachine" type="Node" parent="PlayerController"]
 script = ExtResource("2_5yos1")
 initial_state = NodePath("PlayerNormalState")
 
-[node name="PlayerNormalState" type="Node" parent="StateMachine"]
+[node name="PlayerNormalState" type="Node" parent="PlayerController/StateMachine"]
 script = ExtResource("3_jj554")
 
-[node name="PlayerJumpState" type="Node" parent="StateMachine"]
+[node name="PlayerJumpState" type="Node" parent="PlayerController/StateMachine"]
 script = ExtResource("4_ux613")
 
-[node name="PlayerSinkState" type="Node" parent="StateMachine"]
+[node name="PlayerSinkState" type="Node" parent="PlayerController/StateMachine"]
 script = ExtResource("5_1vtjs")
 
-[node name="PlayerFallingState" type="Node" parent="StateMachine"]
+[node name="PlayerFallingState" type="Node" parent="PlayerController/StateMachine"]
 script = ExtResource("6_d4xsk")
+
+[node name="PlayerInput" type="Node" parent="PlayerController"]

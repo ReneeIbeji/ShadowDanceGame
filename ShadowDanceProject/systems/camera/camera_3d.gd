@@ -40,9 +40,9 @@ func _physics_process(delta):
 
 
 		if currentPlayer.climbing:
-			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.wall_normal, -targetPoint.basis.z.dot(currentPlayer.wall_normal) * 3 * delta )
+			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.wall_normal, 5 * delta )
 			targetPosition.y = 0
-			targetPoint.look_at(targetPoint.position + targetPosition.reflect(-targetPoint.basis.z))
+			targetPoint.look_at(targetPoint.position + targetPosition)
 		elif is_zero_approx(cameraRotateInput)  && forwardDot > -0.8 && turnTowardsFacingDir :
 			var targetPosition = -targetPoint.basis.z.lerp(currentPlayer.facingDirection,  inverse_lerp(0.8,-0.8,forwardDot) * 3 * delta )
 			targetPosition.y = 0

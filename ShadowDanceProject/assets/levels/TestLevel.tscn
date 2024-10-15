@@ -1,7 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b26sopcgcdmlj"]
+[gd_scene load_steps=12 format=3 uid="uid://b26sopcgcdmlj"]
 
 [ext_resource type="Script" path="res://assets/levels/TestLevel.gd" id="1_d77od"]
 [ext_resource type="Script" path="res://prototype/ActivationPole.gd" id="1_vc0gd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uqujb"]
+albedo_color = Color(0.381703, 0.381703, 0.381703, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kn4e0"]
 
@@ -31,17 +34,21 @@ ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ssao_enabled = true
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_rv08s"]
+
 [node name="TestLevel" type="Node3D"]
 script = ExtResource("1_d77od")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(6.76561, 0, 0, 0, 0.870433, -4.90333, 0, 0.492287, 8.66979, -20.059, 1.43307, 6.18402)
+material_override = SubResource("StandardMaterial3D_uqujb")
 use_collision = true
 collision_layer = 2
 collision_mask = 3
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
 transform = Transform3D(-6.76561, -4.3049e-08, -7.57869e-07, 0, 0.870356, -4.90469, 5.91468e-07, -0.492424, -8.66901, -20.0616, 1.48386, -11.9554)
+material_override = SubResource("StandardMaterial3D_uqujb")
 use_collision = true
 collision_layer = 2
 collision_mask = 3
@@ -81,17 +88,19 @@ shape = SubResource("CylinderShape3D_kf36l")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(6.76561, 0, 0, 0, 1, 0, 0, 0, 9.96031, -20.059, 3.82, -2.87)
+material_override = SubResource("StandardMaterial3D_uqujb")
 use_collision = true
 collision_layer = 2
 collision_mask = 3
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.76702, 4.43848, -5.52624)
+material_override = SubResource("StandardMaterial3D_uqujb")
 use_collision = true
 collision_layer = 2
 size = Vector3(4.37305, 14.105, 13.1895)
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+[node name="CSGBox3D5" type="CSGBox3D" parent="." groups=["sinkable"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.96464, 4.30893, -9.81946)
 use_collision = true
 collision_layer = 2
@@ -103,5 +112,11 @@ environment = SubResource("Environment_tuaod")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 1.49012e-08, 0.5, 0.866025, -0.5, 0.75, -0.433013, 1.90735e-06, 3.51778, 3.92751)
 shadow_enabled = true
-directional_shadow_max_distance = 9.5
 sky_mode = 1
+
+[node name="DeathFloor" type="StaticBody3D" parent="." groups=["DeathZone"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -28.1425, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeathFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.834097, 0)
+shape = SubResource("WorldBoundaryShape3D_rv08s")

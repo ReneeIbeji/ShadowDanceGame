@@ -56,6 +56,11 @@ func update(delta : float) -> void:
 
 
 func physics_update(delta : float) -> void:
+	if player.sinkPoints <= 0:
+		player.sinkCooldownLeft = player.POSTMAXSINK_COOLDOWN
+		state_machine.transtion_to("PlayerNormalState", {})
+		return
+
 	if !player.player_is_on_floor() && !player.climbing:
 		offFloorCount += delta
 	else:
@@ -81,9 +86,9 @@ func physics_update(delta : float) -> void:
 					player.velocity -= player.wall_normal 
 					break
 
-	if player.player_is_only_on_wall():
+	if player.player_is_only_on_wall() && player.player_is_on_sinkable_wall():
 		player.climbing = true
-	elif player.player_is_on_wall():
+	elif player.player_is_on_wall() && player.player_is_on_sinkable_wall():
 		player.climbing = true
 	else:
 		player.climbing = false
@@ -95,7 +100,7 @@ func physics_update(delta : float) -> void:
 		newAreaBody = null
 		loopCheckNeeded = false
 	
-	if !player.player_is_on_sinkable_floor() && !(player.climbing && player.player_is_only_on_wall()) && (offFloorCount > offFloorBuffer):
+	if !player.player_is_on_sinkable_floor() && !(player.climbing && player.player_is_only_on_wall() && player.player_is_on_sinkable_wall()) && (offFloorCount > offFloorBuffer):
 		state_machine.transtion_to("PlayerFallingState", {})
 	
 	if player.player_is_on_floor() && !player.player_is_on_sinkable_floor():
@@ -108,7 +113,6 @@ func physics_update(delta : float) -> void:
 		player.change_to_standup_model()
 		state_machine.transtion_to("PlayerJumpState", {})
 	
-	# use global coordinates, not local to node
 	var query = PhysicsRayQueryParameters3D.create(player.position, player.position - player.up_direction * 2,0b10 )
 	var result = space_state.intersect_ray(query)
 	if(result):
@@ -160,13 +164,14 @@ func physics_update(delta : float) -> void:
 		currentDirection =  player.velocity.normalized()
 		currentSurfaceNormal = player.get_floor_normal()
 
-	
+	if player.moving:
+		player.change_sink_points((-delta))
 
 
 
 func exit() -> void:
 	player.up_direction = Vector3.UP
-	player.climbing = false;
+	player.climbing = false
 	player.swimming = false
 
 

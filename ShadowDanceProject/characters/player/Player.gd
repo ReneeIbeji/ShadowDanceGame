@@ -1,6 +1,9 @@
 class_name Player
 extends CharacterBody3D
 
+const MAXSINK_POINTS = 8
+const POSTMAXSINK_COOLDOWN = 3
+
 const MAXSTEP_HEIGHT = 0.5
 const MINSTEP_HEIGHT = 0.05
 
@@ -15,6 +18,8 @@ const JUMP_VELOCITY_MAX = 2
 
 const JUMP_HOLDDOWNTIME = 0.5
 
+var sinkPoints : float
+var sinkCooldownLeft : float
 var currentCameraBasis : Basis
 var currentInputDir : Vector2
 
@@ -22,6 +27,7 @@ var currentInputDir : Vector2
 var moving : bool
 var swimming : bool 
 var climbing : bool
+
 var CurrentSpeed : float = SPEED_NORMAL
 var baseVelocity : Vector3 = Vector3.ZERO
 var facingDirection : Vector3
@@ -33,11 +39,15 @@ var wall_normal : Vector3
 var ceiling_normal : Vector3
 
 var floor_sinkable : bool
+var wall_sinkable : bool
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
 	WorldGlobal.CurrentPlayer = self
+
+	sinkPoints = MAXSINK_POINTS
+
 	playerCollisionState = CollisionState.new(false, false, false)
 	facingDirection = -basis.z
 	currentCameraBasis = WorldGlobal.CurrentPlayerCamera.basis
@@ -56,9 +66,11 @@ func _physics_process(delta):
 		velocity.z = direction.z * CurrentSpeed
 		$PlayerModel.look_at(global_position + velocity.normalized(), Vector3.UP)
 		$PlayerModel.rotation.x = 0
+		moving = true
 	else:
 		velocity.x = move_toward(velocity.x, 0, CurrentSpeed)
 		velocity.z = move_toward(velocity.z, 0, CurrentSpeed)
+		moving = false
 	
 	# move_and_slide()
 	player_move(velocity, delta)
@@ -69,6 +81,46 @@ func _physics_process(delta):
 	if position.y < -10:
 		EventBus.player_died.emit("fallen")
 
+	if !swimming: 
+		sinkPoints += delta
+	if !swimming && sinkCooldownLeft > 0:
+		sinkCooldownLeft -= delta
+
+
+func change_sink_points(deltaPoints : float) -> void:
+	sinkPoints += deltaPoints
+	sinkPoints = clampf(sinkPoints, 0, MAXSINK_POINTS)
+
+
+
+func process_input(delta : float) -> void:
+	var input_dir = Input.get_vector("MOVE_LEFT", "MOVE_RIGHT", "MOVE_FORWARD", "MOVE_BACK")
+	currentCameraBasis = WorldGlobal.CurrentPlayerCamera.basis
+
+
+	var direction = (currentCameraBasis * (Vector3(input_dir.x, 0, input_dir.y))).normalized()
+	
+	if direction:
+		velocity.x = direction.x * CurrentSpeed
+		velocity.z = direction.z * CurrentSpeed
+		$PlayerModel.look_at(global_position + velocity.normalized(), Vector3.UP)
+		$PlayerModel.rotation.x = 0
+		moving = true
+	else:
+		velocity.x = move_toward(velocity.x, 0, CurrentSpeed)
+		velocity.z = move_toward(velocity.z, 0, CurrentSpeed)
+		moving = false
+	
+	player_move(velocity, delta)
+
+	if !velocity.slide(up_direction).is_zero_approx():
+		facingDirection = velocity.slide(up_direction).normalized() * global_basis
+	
+
+	if !swimming: 
+		sinkPoints += delta
+	if !swimming && sinkCooldownLeft > 0:
+		sinkCooldownLeft -= delta
 
 func player_move(var_velocity : Vector3, var_delta : float) -> void:
 	var first_slide : bool = true
@@ -108,7 +160,6 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 				if climbing && first_slide:
 					remaining_motion.y = remaining_motion.dot(-wall_normal)
 					remaining_motion -= remaining_motion.dot(-wall_normal) * -wall_normal
-					print(remaining_motion)
 					first_slide = false
 					continue
 				else:
@@ -132,11 +183,6 @@ func player_move(var_velocity : Vector3, var_delta : float) -> void:
 	if climbing && previousCollisionState.wall:
 		player_apply_wall_snap()
 
-		
-
-
-	
-
 func change_to_standup_model() -> void:
 	$PlayerModel.show()
 	$StandCollisionShape.disabled = false
@@ -148,6 +194,12 @@ func change_to_sink_model() -> void:
 	$StandCollisionShape.disabled = true
 	$SinkModel.show()
 	$SinkCollisionShape.disabled = false
+
+func canSwim() -> bool:
+	if sinkCooldownLeft > 0:
+		return false
+
+	return true
 
 
 func _snap_on_floor(was_on_floor : bool, vel_dir_facing_up : bool) -> void:
@@ -208,6 +260,9 @@ func set_collision_direction(result : KinematicCollision3D, r_state : CollisionS
 	var wall_collision_count : int = 0;
 	var combined_wall_normal : Vector3;
 	var tmp_wall_col : Vector3;
+	
+	wall_sinkable = false
+	floor_sinkable = false
 
 	for i in range(result.get_collision_count() -1 , -1, -1):
 		var floor_angle = result.get_angle(i,up_direction)
@@ -238,6 +293,7 @@ func set_collision_direction(result : KinematicCollision3D, r_state : CollisionS
 			playerCollisionState.wall = true
 			wall_depth = result.get_depth()
 			wall_normal = result.get_normal(i)
+			wall_sinkable = (result.get_collider(i) as Node).is_in_group("sinkable")
 
 			# Don't apply wall velocity when the collider is a CharacterBody3D.
 			# Not bothering with moving platforms for now
@@ -286,6 +342,9 @@ func player_is_on_sinkable_floor() -> bool:
 
 func player_is_on_wall() -> bool:
 	return playerCollisionState.wall
+
+func player_is_on_sinkable_wall() -> bool:
+	return playerCollisionState.wall && wall_sinkable
 
 func player_is_only_on_wall() -> bool:
 	return (playerCollisionState.wall && !(playerCollisionState.floor || playerCollisionState.ceiling))

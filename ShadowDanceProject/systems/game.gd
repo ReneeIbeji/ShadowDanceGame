@@ -16,6 +16,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	updateUI()
 	pass
 
 func player_died(death_cause : String) -> void:
@@ -30,7 +31,7 @@ func loadLevel(levelData : LevelData) -> void:
 		child.queue_free()
 	
 	for child in get_children():
-		if child != $World:
+		if child != $World && child != $UI:
 			child.queue_free()
 	
 
@@ -46,3 +47,8 @@ func loadLevel(levelData : LevelData) -> void:
 	playerScene.position = levelData.startPosition
 	add_child(playerScene)
 
+
+func updateUI() -> void:
+	$UI/GameScreen/ProgressBar.min_value = 0
+	$UI/GameScreen/ProgressBar.max_value = WorldGlobal.CurrentPlayer.MAXSINK_POINTS
+	$UI/GameScreen/ProgressBar.value = WorldGlobal.CurrentPlayer.sinkPoints

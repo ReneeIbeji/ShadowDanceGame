@@ -18,7 +18,7 @@ func update(delta : float) -> void:
 
 func physics_update(delta : float) -> void:
 
-	if player.player_is_on_wall() && Input.is_action_pressed("MOVE_SINK"):
+	if player.player_is_on_sinkable_wall() && player.canSwim() && Input.is_action_pressed("MOVE_SINK"):
 		player.velocity.y = 0
 		state_machine.transtion_to("PlayerSinkState", {})
 

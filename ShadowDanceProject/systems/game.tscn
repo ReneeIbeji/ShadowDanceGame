@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bagxbhi14nusi"]
+[gd_scene load_steps=7 format=3 uid="uid://bagxbhi14nusi"]
 
 [ext_resource type="Script" path="res://systems/game.gd" id="1_irrgo"]
 [ext_resource type="Resource" uid="uid://cmk2pvxn50hif" path="res://assets/levels/TestLevel.tres" id="2_k4u54"]
 [ext_resource type="PackedScene" uid="uid://m6fsvsni2j1g" path="res://systems/camera/camera_3d.tscn" id="2_q4p30"]
 [ext_resource type="PackedScene" uid="uid://buhj3wwu1hkpm" path="res://characters/player/Player.tscn" id="2_whkr8"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jpk4t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_83mbu"]
+texture = SubResource("CompressedTexture2D_jpk4t")
+modulate_color = Color(0, 0, 0, 1)
 
 [node name="Game" type="Node"]
 script = ExtResource("1_irrgo")
@@ -18,3 +24,15 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="GameScreen" type="CanvasLayer" parent="UI"]
+layer = 5
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/GameScreen"]
+offset_left = 655.0
+offset_top = 47.0
+offset_right = 1313.0
+offset_bottom = 131.0
+size_flags_horizontal = 4
+theme_override_styles/fill = SubResource("StyleBoxTexture_83mbu")
+show_percentage = false
