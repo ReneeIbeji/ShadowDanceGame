@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dve8qr7wgblfa"]
+[gd_scene load_steps=6 format=3 uid="uid://dve8qr7wgblfa"]
 
 [ext_resource type="Script" path="res://classes/LevelClass.gd" id="1_hewew"]
 
@@ -20,8 +20,17 @@ ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ssao_enabled = true
 
+[sub_resource type="BoxMesh" id="BoxMesh_v60i0"]
+
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_hewew")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gdvrl")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="." groups=["sinkable"]]
+transform = Transform3D(13.045, 0, 0, 0, 1, 0, 0, 0, 15.411, 0, -1.04393, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+mesh = SubResource("BoxMesh_v60i0")

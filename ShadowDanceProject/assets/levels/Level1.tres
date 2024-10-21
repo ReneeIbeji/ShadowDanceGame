@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://d22pgyl1ub0xn"]
+[gd_resource type="Resource" script_class="LevelData" load_steps=3 format=3 uid="uid://d22pgyl1ub0xn"]
 
+[ext_resource type="PackedScene" uid="uid://dve8qr7wgblfa" path="res://assets/levels/Level1.tscn" id="1_dxevp"]
 [ext_resource type="Script" path="res://resources/LevelDataResouce.gd" id="1_v3iqu"]
 
 [resource]
 script = ExtResource("1_v3iqu")
-name = ""
+name = "Level 1"
+scene = ExtResource("1_dxevp")
 startPosition = Vector3(0, 0, 0)

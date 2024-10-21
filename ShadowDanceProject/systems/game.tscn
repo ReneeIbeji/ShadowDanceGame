@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://bagxbhi14nusi"]
 
 [ext_resource type="Script" path="res://systems/game.gd" id="1_irrgo"]
-[ext_resource type="Resource" uid="uid://cmk2pvxn50hif" path="res://assets/levels/TestLevel.tres" id="2_k4u54"]
 [ext_resource type="PackedScene" uid="uid://m6fsvsni2j1g" path="res://systems/camera/camera_3d.tscn" id="2_q4p30"]
 [ext_resource type="PackedScene" uid="uid://buhj3wwu1hkpm" path="res://characters/player/Player.tscn" id="2_whkr8"]
+[ext_resource type="Resource" uid="uid://d22pgyl1ub0xn" path="res://assets/levels/Level1.tres" id="4_rvppx"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jpk4t"]
 
@@ -15,7 +15,7 @@ modulate_color = Color(0, 0, 0, 1)
 script = ExtResource("1_irrgo")
 player = ExtResource("2_whkr8")
 camera = ExtResource("2_q4p30")
-testLevelData = ExtResource("2_k4u54")
+testLevelData = ExtResource("4_rvppx")
 
 [node name="World" type="Node3D" parent="."]
 
