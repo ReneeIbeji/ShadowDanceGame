@@ -84,4 +84,3 @@ func make_within_range(v : float, a : float, b : float):
 		return clamp(v, a, b)
 	
 	return clamp(v, b, a)
-

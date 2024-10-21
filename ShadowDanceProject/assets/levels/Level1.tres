@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://d22pgyl1ub0xn"]
+
+[ext_resource type="Script" path="res://resources/LevelDataResouce.gd" id="1_v3iqu"]
+
+[resource]
+script = ExtResource("1_v3iqu")
+name = ""
+startPosition = Vector3(0, 0, 0)

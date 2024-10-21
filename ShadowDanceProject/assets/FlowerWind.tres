@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://xf10tu0x13wv"]
+
+[sub_resource type="Shader" id="Shader_te6wq"]
+code = "shader_type spatial;
+
+uniform float windPower : hint_range(0,1);
+
+void vertex(){
+	float heightWeight = VERTEX.y;
+	float swayValue = sin(TIME) * windPower;
+	float z = VERTEX.z + heightWeight * swayValue;
+	VERTEX = vec3(VERTEX.x,VERTEX.y,z);
+}"
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_te6wq")
+shader_parameter/windPower = 0.165

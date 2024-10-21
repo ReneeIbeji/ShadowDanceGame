@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://b26sopcgcdmlj"]
+[gd_scene load_steps=13 format=3 uid="uid://b26sopcgcdmlj"]
 
 [ext_resource type="Script" path="res://assets/levels/TestLevel.gd" id="1_d77od"]
 [ext_resource type="Script" path="res://prototype/ActivationPole.gd" id="1_vc0gd"]
+[ext_resource type="PackedScene" uid="uid://qct0ommbw1wy" path="res://assets/NoPetelFlower.glb" id="4_7ol2o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uqujb"]
 albedo_color = Color(0.381703, 0.381703, 0.381703, 1)
@@ -120,3 +121,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -28.1425, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeathFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.834097, 0)
 shape = SubResource("WorldBoundaryShape3D_rv08s")
+
+[node name="FlowerBunch" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999269, 0.0382308, 0, -0.0382308, 0.999269, -30.0002, 0, 24.4228)
+
+[node name="NoPetelFlower" parent="FlowerBunch" instance=ExtResource("4_7ol2o")]
+transform = Transform3D(0.285, 0, 0, 0, 0.284792, -0.0108958, 0, 0.0108958, 0.284792, 0.270914, -0.543589, -0.223976)
+
+[node name="NoPetelFlower2" parent="FlowerBunch" instance=ExtResource("4_7ol2o")]
+transform = Transform3D(0.285, 0, 0, 0, 0.284792, -0.0108958, 0, 0.0108958, 0.284792, 1.46701, -0.575925, 0.621208)
+
+[node name="NoPetelFlower3" parent="FlowerBunch" instance=ExtResource("4_7ol2o")]
+transform = Transform3D(0.285, 0, 0, 0, 0.284792, -0.0108958, 0, 0.0108958, 0.284792, -0.981012, -0.757981, 0.162813)
+
+[node name="NoPetelFlower4" parent="FlowerBunch" instance=ExtResource("4_7ol2o")]
+transform = Transform3D(0.285, 0, 0, 0, 0.284792, -0.0108958, 0, 0.0108958, 0.284792, 0.753731, -0.583474, 0.818521)
+
+[node name="NoPetelFlower5" parent="FlowerBunch" instance=ExtResource("4_7ol2o")]
+transform = Transform3D(0.285, 0, 0, 0, 0.284792, -0.0108958, 0, 0.0108958, 0.284792, 0.270914, -0.427008, 1.73802)
