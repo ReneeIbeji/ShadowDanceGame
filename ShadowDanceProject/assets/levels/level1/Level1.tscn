@@ -1,0 +1,90 @@
+[gd_scene load_steps=11 format=3 uid="uid://dve8qr7wgblfa"]
+
+[ext_resource type="Script" path="res://assets/levels/level1/level_1.gd" id="1_tuhxt"]
+[ext_resource type="Script" path="res://assets/levels/level1/poll_1.gd" id="2_lhy3r"]
+[ext_resource type="Script" path="res://assets/levels/level1/formed_platform.gd" id="3_nflco"]
+[ext_resource type="Script" path="res://assets/levels/level1/SetPoints.gd" id="4_d1cmw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnlr1"]
+sky_top_color = Color(0.470588, 0.470588, 0.470588, 1)
+sky_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
+sky_energy_multiplier = 0.5
+ground_bottom_color = Color(0.76, 0.76, 0.76, 1)
+ground_horizon_color = Color(0.807647, 0.807647, 0.807647, 1)
+
+[sub_resource type="Sky" id="Sky_8vlou"]
+sky_material = SubResource("ProceduralSkyMaterial_nnlr1")
+
+[sub_resource type="Environment" id="Environment_gdvrl"]
+background_mode = 1
+background_color = Color(0.788235, 0.788235, 0.788235, 1)
+sky = SubResource("Sky_8vlou")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_v60i0"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ahkmh"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2klm8"]
+height = 5.52014
+
+[node name="Level1" type="Node3D"]
+script = ExtResource("1_tuhxt")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gdvrl")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="." groups=["sinkable"]]
+transform = Transform3D(7.53961, 0, 0, 0, 1, 0, 0, 0, 15.411, 0.0319271, -0.995119, -0.36983)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+mesh = SubResource("BoxMesh_v60i0")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="." groups=["sinkable"]]
+transform = Transform3D(21.2884, 0, 0, 0, 0.99439, 0, 0, 0, 15.3245, -0.0202398, -1.07302, -15.4663)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+mesh = SubResource("BoxMesh_v60i0")
+
+[node name="Poll1" type="StaticBody3D" parent="." node_paths=PackedStringArray("platformController") groups=["interactable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.8802)
+collision_layer = 4
+script = ExtResource("2_lhy3r")
+platformController = NodePath("../FormedPlatform")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Poll1"]
+transform = Transform3D(0.535, 0, 0, 0, 1.447, 0, 0, 0, 0.535, 0, 1.804, 0)
+mesh = SubResource("CylinderMesh_ahkmh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Poll1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.835, 0)
+shape = SubResource("CylinderShape3D_2klm8")
+
+[node name="FormedPlatform" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.78555, 0.712286, -31.1055)
+script = ExtResource("3_nflco")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="FormedPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.60719, -1.46506, 3.68522)
+use_collision = true
+size = Vector3(8.82825, 1, 5.52832)
+script = ExtResource("4_d1cmw")
+points = Array[Vector3]([Vector3(-23.126, -1.465, 3.685), Vector3(-2.104, -1.465, 3.685)])
+
+[node name="CSGBox3D" type="CSGBox3D" parent="FormedPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.358608, -1.17517, -3.9788)
+use_collision = true
+size = Vector3(8.82825, 1, 5.52832)
+script = ExtResource("4_d1cmw")
+points = Array[Vector3]([Vector3(27.502, -1.175, -3.979), Vector3(-0.319, -1.175, -3.979)])
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="." groups=["sinkable"]]
+transform = Transform3D(21.2884, 0, 0, 0, 0.99439, 0, 0, 0, 15.3245, -0.0202398, -1.07302, -48.0524)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+mesh = SubResource("BoxMesh_v60i0")

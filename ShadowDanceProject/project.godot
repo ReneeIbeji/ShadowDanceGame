@@ -35,6 +35,7 @@ window/size/initial_position_type=2
 
 sinkable=""
 DeadZone=""
+interactable=""
 
 [input]
 
